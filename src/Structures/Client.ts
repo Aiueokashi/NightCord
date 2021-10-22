@@ -8,6 +8,7 @@ import fs from "fs";
 
 export class NightCordClient extends Client {
   commands: Collection<string, Command>;
+  events: Collection<string, any>;
   multi: any;
   colors: any;
   
@@ -22,6 +23,7 @@ export class NightCordClient extends Client {
       hideCursor: true
     })
     this.colors = _colors;
+    this.events = new Collection();
   }
 
   public async loadCommands(){
@@ -36,14 +38,28 @@ export class NightCordClient extends Client {
           name: command.name,
           description: command.description,
           options: command.options
-      },process.env.GUILD_ID);
-      
+      },process.env.GUILD_ID);  
+    }
   }
+
+  public async loadEvents(){
+    const listenerFiles = fs.readdirSync("./src/Listeners");
+    for(const file of listenerFiles){
+
+      delete require.cache[`${file}`];
+      const listener = new (require(`../Listeners/${file}`))(this),
+          eventname:string = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
+      
+        this.events.set(eventname, listener);
+
+        super.on(eventname, (...args) => listener.run(...args));
+    }
   }
 
   public async init(){
     const login_bar = this.multi.create(1,0);
     try{
+      this.loadEvents();
       await this.login(process.env.TOKEN);
       login_bar.increment();
       this.loadCommands();

@@ -7,9 +7,6 @@ const options = {
 
 const client = new NightCordClient(options);
 
-client.on("ready", () => {
-  console.log(`[${client.commands.map(c=>client.colors.cyan(c.name))}]`)
-})
 
 client.on("interactionCreate", async (interaction:CommandInteraction) => {
   try {
