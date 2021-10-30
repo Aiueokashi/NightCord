@@ -1,11 +1,13 @@
 class Ready {
   client: any;
+  type: string;
   constructor(client){
-    this.client = client
+    this.client = client;
+    this.type = "discord";
   }
   
   public async run(){
-    console.log(`[${this.client.commands.map(c=> this.client.colors.cyan(c.name))}]`)
+    console.log(`Logged in as : ${this.client.user.tag}`)
   }
 }
 

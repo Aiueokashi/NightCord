@@ -1,4 +1,4 @@
-import { Intents, CommandInteraction } from "discord.js";
+import { Intents } from "discord.js";
 import { NightCordClient } from "./Structures/Client";
 
 const options = {
@@ -6,19 +6,6 @@ const options = {
 }
 
 const client = new NightCordClient(options);
-
-
-client.on("interactionCreate", async (interaction:CommandInteraction) => {
-  try {
-    const command = client.commands.get(
-      interaction.commandName.toLowerCase()
-    );
-    if (command) command.run(interaction, interaction.options);
-    } catch (error) {
-      interaction.reply({ content: error.message, ephemeral: true });
-    }
-  });
-
 
 //@ts-ignore
 client.init();

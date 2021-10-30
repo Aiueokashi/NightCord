@@ -1,6 +1,6 @@
 import { Command } from "../Structures/Command";
 import { CommandInteraction } from "discord.js";
-import  os from "os";
+import os from "os";
 const botv:any = process.env;
 const discordjsVersion = botv.npm_package_dependencies_discord_js;
 const botversion = botv.npm_package_version;
