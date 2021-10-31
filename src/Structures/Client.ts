@@ -4,6 +4,7 @@ import _colors from "colors";
 import mongoose from "mongoose";
 import fs from "fs";
 import readlineSync from "readline-sync";
+import axios from "axios";
 
 export class NightCordClient extends Client {
   commands: Collection<string, Command>;
@@ -19,6 +20,18 @@ export class NightCordClient extends Client {
     this.mongoEvents = new Collection();
     this.readline = readlineSync;
   }
+
+  public async loadAssets(){
+    const assetURL = "https://api.github.com/repos/Sekai-World/sekai-master-db-diff/contents";
+    const res = await axios.get(assetURL);
+    const data = res.data.filter(r => r.name.endsWith("json"));
+    for await(const d of data){
+      const raw = await axios.get(d.download_url)
+      fs.writeFileSync(`src/Assets/${d.name}`,JSON.stringify(raw.data));
+    }
+    return true;
+  }
+
 
   public async loadCommands(){
     const commandFiles = fs.readdirSync(`${__dirname}/../Commands`);
@@ -54,6 +67,7 @@ export class NightCordClient extends Client {
   public async init(){
       require("../Modules/KeepAlive")
       this.loadEvents();
+      this.loadAssets();
       await this.login(process.env.TOKEN); 
       this.loadCommands();
       await mongoose.connect(process.env.MONGO_URI,{

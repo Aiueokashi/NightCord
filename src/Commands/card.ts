@@ -1,5 +1,7 @@
 import { Command } from '../Structures/Command';
+//import axios from 'axios';
 import { CommandInteraction } from 'discord.js';
+//@ts-ignore
 import { ATTR, RARITY_POWER } from '../Structures/Constants';
 
 //@ts-ignore
@@ -31,7 +33,6 @@ module.exports = class Card extends Command{
   }
   //@ts-ignore
   public async run(interaction:CommandInteraction, args:any){
-    console.log(ATTR)
-    console.log(RARITY_POWER)
+    
   }
 }
