@@ -12,6 +12,10 @@ export class NightCordClient extends Client {
   mongoEvents: Collection<string, any>;
   colors: any;
   readline: any;
+  dbGuild: string;
+  notifyChannel: string;
+  logChannel: string;
+  modChannel: string;
   constructor(options:any){
     super(options);
     this.commands = new Collection();
@@ -19,6 +23,15 @@ export class NightCordClient extends Client {
     this.clientEvents = new Collection();
     this.mongoEvents = new Collection();
     this.readline = readlineSync;
+    this.dbGuild = "731050051396173825";
+    this.notifyChannel = "760785558296330261";
+    this.logChannel = "787308319417171969";
+    this.modChannel = "796027728868016169"
+  }
+
+  public async loadProsekaEvents(){
+    const eventAsset = require("../Assets/events.json");
+    console.log(eventAsset)
   }
 
   public async loadAssets(){
@@ -39,12 +52,14 @@ export class NightCordClient extends Client {
       delete require.cache[`${file}`];
       const command: Command = new (require(`../Commands/${file}`))(this),
       filename: string = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
+      if(!command.disable){
       this.commands.set(filename, command);
       this.application.commands.create({
           name: command.name,
           description: command.description,
           options: command.options
       },process.env.GUILD_ID);  
+      }
     }
   }
 

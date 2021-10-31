@@ -1,8 +1,7 @@
 import { Command } from '../Structures/Command';
-//import axios from 'axios';
-import { CommandInteraction } from 'discord.js';
+import { MessageEmbed, CommandInteraction } from 'discord.js';
 //@ts-ignore
-import { ATTR, RARITY_POWER } from '../Structures/Constants';
+import { ATTR, RARITY_POWER, RARELITY } from '../Structures/Constants';
 
 //@ts-ignore
 module.exports = class Card extends Command{
@@ -12,8 +11,8 @@ module.exports = class Card extends Command{
       description:"プロセカのカードを検索します。",
       options:[{
         name:"カード名",
-        description:"カードの名前に含まれる文字列かキャラクター名",
-        type:3,
+        description:"カードのID",
+        type:4,
         required:true
       },{
         name:"表示",
@@ -28,11 +27,58 @@ module.exports = class Card extends Command{
           value:0
         }]
       }],
-      disable:false
+      disable:true
     })
   }
   //@ts-ignore
   public async run(interaction:CommandInteraction, args:any){
-    
+    const CARD_DATA = require("../Assets/cards.json");
+    const Target = CARD_DATA.find(c => c.id === args.get("カード名").value);
+    if(!Target){
+      return interaction.reply({content:"そのIDにはカードが存在しません.",ephemeral: true})
+    }
+    if(Target.releaseAt > Date.now()){
+      return interaction.reply({content:"まだゲーム内で公開されていないため表示できません",ephemeral: true})
+    }
+    const rarities = require("../Assets/cardRarities.json");
+    const episodes = require("../Assets/cardEpisodes.json");
+    const maxparam = this.getMaxParam(Target,rarities,episodes);
+    if(Target.cardRarityType === "rarity_birthday"){
+      Target.rarity = 5
+    }
+    const Card_embed = new MessageEmbed()
+    .setThumbnail(`https://sekai-res.dnaroma.eu/file/sekai-assets/thumbnail/chara_rip/${Target.assetbundleName}_normal.webp`)
+    .setTitle(`[${ATTR[Target.attr]}] ${Target.prefix}`)
+    .addField("最大総合力",`${maxparam}`,true)
+    .addField("レアリティ", RARELITY[Target.rarity], true)
+
+    interaction.reply({embeds:[Card_embed],ephemeral:true});
+  }
+
+  private getMaxParam(card:any,rarities:any,episodes:any){
+     const rarity = rarities.find((rarity) => rarity.rarity === card.rarity);
+     const maxLevel = rarity.trainingMaxLevel || rarity.maxLevel;
+     let maxParam =
+    card.cardParameters
+      .filter((cp) => cp.cardLevel === maxLevel)
+      .reduce((sum, cp) => {
+        sum += cp.power;
+        return sum;
+      }, 0) +
+    episodes
+      .filter((episode) => episode.cardId === card.id)
+      .reduce((sum, episode) => {
+        sum += episode.power1BonusFixed;
+        sum += episode.power2BonusFixed;
+        sum += episode.power3BonusFixed;
+        return sum;
+      }, 0);
+  if (card.rarity >= 3)
+    maxParam +=
+      card.specialTrainingPower1BonusFixed +
+      card.specialTrainingPower2BonusFixed +
+      card.specialTrainingPower3BonusFixed;
+
+  return maxParam;
   }
 }

@@ -45,10 +45,12 @@ export const RARELITY = {
     2: "<:rarity_star_normal:800616036910104606><:rarity_star_normal:800616036910104606>",
     3: "<:rarity_star_normal:800616036910104606><:rarity_star_normal:800616036910104606><:rarity_star_normal:800616036910104606>",
     4: "<:rarity_star_normal:800616036910104606><:rarity_star_normal:800616036910104606><:rarity_star_normal:800616036910104606><:rarity_star_normal:800616036910104606>",
+    5: "<:rarity_birthday:904337933895610399>"
 };
 export const TRAINING_RARELITY = {
     1: "<:rarity_star_normal:800616036910104606>",
     2: "<:rarity_star_normal:800616036910104606><:rarity_star_normal:800616036910104606>",
     3: "<:rarity_star_afterTraining:800616092611379200><:rarity_star_afterTraining:800616092611379200><:rarity_star_afterTraining:800616092611379200>",
     4: "<:rarity_star_afterTraining:800616092611379200><:rarity_star_afterTraining:800616092611379200><:rarity_star_afterTraining:800616092611379200><:rarity_star_afterTraining:800616092611379200>",
+    5: "<:rarity_birthday:904337933895610399>"
 };
