@@ -40,7 +40,7 @@ export class NightCordClient extends Client {
     const data = res.data.filter(r => r.name.endsWith("json"));
     for await(const d of data){
       const raw = await axios.get(d.download_url)
-      fs.writeFileSync(`src/Assets/${d.name}`,JSON.stringify(raw.data));
+      fs.writeFileSync(`${__dirname}/../Assets/${d.name}`,JSON.stringify(raw.data));
     }
     return true;
   }

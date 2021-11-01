@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = require("../Structures/Command");
+const discord_js_1 = require("discord.js");
 const Constants_1 = require("../Structures/Constants");
 module.exports = class Card extends Command_1.Command {
     constructor(client) {
@@ -18,8 +19,8 @@ module.exports = class Card extends Command_1.Command {
             description: "プロセカのカードを検索します。",
             options: [{
                     name: "カード名",
-                    description: "カードの名前に含まれる文字列かキャラクター名",
-                    type: 3,
+                    description: "カードのID",
+                    type: 4,
                     required: true
                 }, {
                     name: "表示",
@@ -34,13 +35,55 @@ module.exports = class Card extends Command_1.Command {
                             value: 0
                         }]
                 }],
-            disable: false
+            disable: true
         });
     }
     run(interaction, args) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(Constants_1.ATTR);
-            console.log(Constants_1.RARITY_POWER);
+            const CARD_DATA = require("../Assets/cards.json");
+            const Target = CARD_DATA.find(c => c.id === args.get("カード名").value);
+            if (!Target) {
+                return interaction.reply({ content: "そのIDにはカードが存在しません.", ephemeral: true });
+            }
+            if (Target.releaseAt > Date.now()) {
+                return interaction.reply({ content: "まだゲーム内で公開されていないため表示できません", ephemeral: true });
+            }
+            const rarities = require("../Assets/cardRarities.json");
+            const episodes = require("../Assets/cardEpisodes.json");
+            const maxparam = this.getMaxParam(Target, rarities, episodes);
+            if (Target.cardRarityType === "rarity_birthday") {
+                Target.rarity = 5;
+            }
+            const Card_embed = new discord_js_1.MessageEmbed()
+                .setThumbnail(`https://sekai-res.dnaroma.eu/file/sekai-assets/thumbnail/chara_rip/${Target.assetbundleName}_normal.webp`)
+                .setTitle(`[${Constants_1.ATTR[Target.attr]}] ${Target.prefix}`)
+                .addField("最大総合力", `${maxparam}`, true)
+                .addField("レアリティ", Constants_1.RARELITY[Target.rarity], true);
+            interaction.reply({ embeds: [Card_embed], ephemeral: true });
         });
+    }
+    getMaxParam(card, rarities, episodes) {
+        const rarity = rarities.find((rarity) => rarity.rarity === card.rarity);
+        const maxLevel = rarity.trainingMaxLevel || rarity.maxLevel;
+        let maxParam = card.cardParameters
+            .filter((cp) => cp.cardLevel === maxLevel)
+            .reduce((sum, cp) => {
+            sum += cp.power;
+            return sum;
+        }, 0) +
+            episodes
+                .filter((episode) => episode.cardId === card.id)
+                .reduce((sum, episode) => {
+                sum += episode.power1BonusFixed;
+                sum += episode.power2BonusFixed;
+                sum += episode.power3BonusFixed;
+                return sum;
+            }, 0);
+        if (card.rarity >= 3)
+            maxParam +=
+                card.specialTrainingPower1BonusFixed +
+                    card.specialTrainingPower2BonusFixed +
+                    card.specialTrainingPower3BonusFixed;
+        return maxParam;
     }
 };
