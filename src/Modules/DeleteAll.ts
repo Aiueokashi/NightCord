@@ -1,4 +1,11 @@
-const deleteAll = async function(client){
+class deleteAll {
+  client: any;
+  constructor(client){
+    this.client = client;
+  }
+  public async run(){
+    let client = this.client;
+  if(client.deleteCmd){
   let Globalcmds = await client.api.applications(client.user.id).commands.get();
   let Guildcmds = await client.api
     .applications(client.user.id)
@@ -23,6 +30,11 @@ const deleteAll = async function(client){
       "Deleted Guild command { name: " + cmds.name + ", ID: " + cmds.id + " }"
     );
   });
+    return 1;
+  }else{
+    return 0;
+  }
+  }
 }
 
 module.exports = deleteAll;

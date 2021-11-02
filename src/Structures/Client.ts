@@ -10,6 +10,8 @@ export class NightCordClient extends Client {
   commands: Collection<string, Command>;
   clientEvents: Collection<string, any>;
   mongoEvents: Collection<string, any>;
+  modules: Collection<string, any>;
+  deleteCmd: boolean;
   colors: any;
   readline: any;
   dbGuild: string;
@@ -22,16 +24,23 @@ export class NightCordClient extends Client {
     this.colors = _colors;
     this.clientEvents = new Collection();
     this.mongoEvents = new Collection();
+    this.modules = new Collection();
     this.readline = readlineSync;
     this.dbGuild = "731050051396173825";
     this.notifyChannel = "760785558296330261";
     this.logChannel = "787308319417171969";
-    this.modChannel = "796027728868016169"
+    this.modChannel = "796027728868016169";
+    this.deleteCmd = false;
   }
 
-  public async loadProsekaEvents(){
+  public getInEvent(){
     const eventAsset = require("../Assets/events.json");
-    console.log(eventAsset)
+    let event = eventAsset.find(e => Date.now() < e.aggregateAt && Date.now() > e.startAt);
+    if(!event){
+      return null
+    }else{
+      return event;
+    }
   }
 
   public async loadAssets(){
@@ -45,6 +54,16 @@ export class NightCordClient extends Client {
     return true;
   }
 
+  public async loadModules(){
+    const moduleFiles = fs.readdirSync(`${__dirname}/../Modules`);
+    for await (const file of moduleFiles){
+      delete require.cache[`${file}`];
+        const module = new (require(`../Modules/${file}`))(this),
+          modulename: string = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
+        this.modules.set(modulename,module);
+        module.run();
+    }
+  }
 
   public async loadCommands(){
     const commandFiles = fs.readdirSync(`${__dirname}/../Commands`);
@@ -82,6 +101,7 @@ export class NightCordClient extends Client {
   public async init(){
       require("../Modules/KeepAlive")
       this.loadEvents();
+      this.loadModules();
       this.loadAssets();
       await this.login(process.env.TOKEN); 
       this.loadCommands();

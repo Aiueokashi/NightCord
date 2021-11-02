@@ -33,17 +33,23 @@ class NightCordClient extends discord_js_1.Client {
         this.colors = colors_1.default;
         this.clientEvents = new discord_js_1.Collection();
         this.mongoEvents = new discord_js_1.Collection();
+        this.modules = new discord_js_1.Collection();
         this.readline = readline_sync_1.default;
         this.dbGuild = "731050051396173825";
         this.notifyChannel = "760785558296330261";
         this.logChannel = "787308319417171969";
         this.modChannel = "796027728868016169";
+        this.deleteCmd = false;
     }
-    loadProsekaEvents() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const eventAsset = require("../Assets/events.json");
-            console.log(eventAsset);
-        });
+    getInEvent() {
+        const eventAsset = require("../Assets/events.json");
+        let event = eventAsset.find(e => Date.now() < e.aggregateAt && Date.now() > e.startAt);
+        if (!event) {
+            return null;
+        }
+        else {
+            return event;
+        }
     }
     loadAssets() {
         var e_1, _a;
@@ -68,8 +74,30 @@ class NightCordClient extends discord_js_1.Client {
             return true;
         });
     }
-    loadCommands() {
+    loadModules() {
         var e_2, _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const moduleFiles = fs_1.default.readdirSync(`${__dirname}/../Modules`);
+            try {
+                for (var moduleFiles_1 = __asyncValues(moduleFiles), moduleFiles_1_1; moduleFiles_1_1 = yield moduleFiles_1.next(), !moduleFiles_1_1.done;) {
+                    const file = moduleFiles_1_1.value;
+                    delete require.cache[`${file}`];
+                    const module = new (require(`../Modules/${file}`))(this), modulename = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
+                    this.modules.set(modulename, module);
+                    module.run();
+                }
+            }
+            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+            finally {
+                try {
+                    if (moduleFiles_1_1 && !moduleFiles_1_1.done && (_a = moduleFiles_1.return)) yield _a.call(moduleFiles_1);
+                }
+                finally { if (e_2) throw e_2.error; }
+            }
+        });
+    }
+    loadCommands() {
+        var e_3, _a;
         return __awaiter(this, void 0, void 0, function* () {
             const commandFiles = fs_1.default.readdirSync(`${__dirname}/../Commands`);
             try {
@@ -87,12 +115,12 @@ class NightCordClient extends discord_js_1.Client {
                     }
                 }
             }
-            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+            catch (e_3_1) { e_3 = { error: e_3_1 }; }
             finally {
                 try {
                     if (commandFiles_1_1 && !commandFiles_1_1.done && (_a = commandFiles_1.return)) yield _a.call(commandFiles_1);
                 }
-                finally { if (e_2) throw e_2.error; }
+                finally { if (e_3) throw e_3.error; }
             }
         });
     }
@@ -100,7 +128,7 @@ class NightCordClient extends discord_js_1.Client {
         const _super = Object.create(null, {
             on: { get: () => super.on }
         });
-        var e_3, _a;
+        var e_4, _a;
         return __awaiter(this, void 0, void 0, function* () {
             const listenerFiles = fs_1.default.readdirSync(`${__dirname}/../Listeners`);
             try {
@@ -118,12 +146,12 @@ class NightCordClient extends discord_js_1.Client {
                     }
                 }
             }
-            catch (e_3_1) { e_3 = { error: e_3_1 }; }
+            catch (e_4_1) { e_4 = { error: e_4_1 }; }
             finally {
                 try {
                     if (listenerFiles_1_1 && !listenerFiles_1_1.done && (_a = listenerFiles_1.return)) yield _a.call(listenerFiles_1);
                 }
-                finally { if (e_3) throw e_3.error; }
+                finally { if (e_4) throw e_4.error; }
             }
         });
     }
@@ -131,6 +159,7 @@ class NightCordClient extends discord_js_1.Client {
         return __awaiter(this, void 0, void 0, function* () {
             require("../Modules/KeepAlive");
             this.loadEvents();
+            this.loadModules();
             this.loadAssets();
             yield this.login(process.env.TOKEN);
             this.loadCommands();
