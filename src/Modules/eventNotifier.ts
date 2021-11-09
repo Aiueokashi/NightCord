@@ -1,0 +1,36 @@
+import cron from 'node-cron';
+
+class eventNotifier {
+  client: any;
+  eventModel: any;
+  constructor(client){
+    this.client = client;
+    this.eventModel = require("../Models/event");
+  }
+
+  public async run(){
+    cron.schedule('0 * * * * *', () => {
+      this.eventCheck();
+    })
+  }
+
+  private async eventCheck(){
+    let event = this.client.getInEvent();
+    if(!event){
+      return null;
+    }else{
+      let eventmodel = this.eventModel.findOne({id:event.id});
+      if(eventmodel){
+        eventmodel = new this.eventModel({
+          id:event.id,
+          data:event
+        })
+        await eventmodel.save();
+      }
+      return 1;
+    }
+  }
+  
+}
+
+module.exports = eventNotifier

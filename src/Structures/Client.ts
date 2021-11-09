@@ -1,16 +1,21 @@
 import { Client, Collection } from "discord.js";
 import { Command } from "./Command";
+import { Logger } from "./Logger";
 import _colors from "colors";
 import mongoose from "mongoose";
 import fs from "fs";
 import readlineSync from "readline-sync";
 import axios from "axios";
+import { SekaiApi } from "./SekaiApi";
 
 export class NightCordClient extends Client {
   commands: Collection<string, Command>;
   clientEvents: Collection<string, any>;
   mongoEvents: Collection<string, any>;
+  sekaiEvents: Collection<string, any>;
   modules: Collection<string, any>;
+  logger: Logger;
+  sekaiApi: SekaiApi;
   deleteCmd: boolean;
   colors: any;
   readline: any;
@@ -24,7 +29,10 @@ export class NightCordClient extends Client {
     this.colors = _colors;
     this.clientEvents = new Collection();
     this.mongoEvents = new Collection();
+    this.sekaiEvents = new Collection();
     this.modules = new Collection();
+    this.logger = new Logger();
+    this.sekaiApi = new SekaiApi();
     this.readline = readlineSync;
     this.dbGuild = "731050051396173825";
     this.notifyChannel = "760785558296330261";
@@ -94,6 +102,9 @@ export class NightCordClient extends Client {
       }else if(listener.type === "mongoose"){
         this.mongoEvents.set(eventname, listener);
         mongoose.connection.on(eventname, (...args) => listener.run(...args));
+      }else if(listener.type === "sekai"){
+        this.sekaiEvents.set(eventname, listener);
+        this.sekaiApi.on(eventname, (...args) => listener.run(...args));
       }
     }
   }
@@ -103,8 +114,10 @@ export class NightCordClient extends Client {
       this.loadEvents();
       this.loadModules();
       this.loadAssets();
-      await this.login(process.env.TOKEN); 
+      await this.login(process.env.TOKEN);
+      this.sekaiApi.setup(this);
       this.loadCommands();
+      this.logger.setup(this);
       await mongoose.connect(process.env.MONGO_URI,{
         useNewUrlParser: true,
         useUnifiedTopology: true,

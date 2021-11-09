@@ -27,7 +27,8 @@ class RankPoster {
 			`https://sekai-res.dnaroma.eu/file/sekai-assets/home/banner/${event.assetbundleName}_rip/${event.assetbundleName}.webp`
 		);
     let desc:string = "";
-    let isNew: boolean = false;
+    let passed: boolean = false;
+    let isNew: boolean = true;
     for await(const t of this.ranks){
       const res = await axios({
     		method: "GET",
@@ -37,16 +38,26 @@ class RankPoster {
     			rank: `${t}`,
         }
       });
-      //new Date(res.data.timestamp)
-      if(isNew){};
+      
       //@ts-ignore
       const rank = res.data.data.eventRankings[0];
+      let dataTime = new Date(res.data.data.timestamp);
+      let now = new Date();
+      if(!passed){
+        if((now.getTime()-dataTime.getTime()) > 600000){
+          isNew = false;
+          passed = true;
+        }else{
+          passed = true;
+        }
+      }
       desc = desc + `${t}位 : ${rank.userName} | ポイント : ${rank.score}\n`;
       
     }
 
-    rank_embed.setDescription(desc);
-    this.client.channels.fetch("786953511182401566").then(c => c.send(rank_embed));
+    isNew ? null : rank_embed.setColor("RED").setFooter("10分以上前のデータです。")
+    rank_embed.setDescription(desc).setTimestamp();
+    this.client.channels.fetch("786953511182401566").then(c => c.send({embeds:[rank_embed]}));
   }
 
 }

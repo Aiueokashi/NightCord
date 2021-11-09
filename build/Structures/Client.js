@@ -21,11 +21,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NightCordClient = void 0;
 const discord_js_1 = require("discord.js");
+const Logger_1 = require("./Logger");
 const colors_1 = __importDefault(require("colors"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const fs_1 = __importDefault(require("fs"));
 const readline_sync_1 = __importDefault(require("readline-sync"));
 const axios_1 = __importDefault(require("axios"));
+const SekaiApi_1 = require("./SekaiApi");
 class NightCordClient extends discord_js_1.Client {
     constructor(options) {
         super(options);
@@ -33,7 +35,10 @@ class NightCordClient extends discord_js_1.Client {
         this.colors = colors_1.default;
         this.clientEvents = new discord_js_1.Collection();
         this.mongoEvents = new discord_js_1.Collection();
+        this.sekaiEvents = new discord_js_1.Collection();
         this.modules = new discord_js_1.Collection();
+        this.logger = new Logger_1.Logger();
+        this.sekaiApi = new SekaiApi_1.SekaiApi();
         this.readline = readline_sync_1.default;
         this.dbGuild = "731050051396173825";
         this.notifyChannel = "760785558296330261";
@@ -144,6 +149,10 @@ class NightCordClient extends discord_js_1.Client {
                         this.mongoEvents.set(eventname, listener);
                         mongoose_1.default.connection.on(eventname, (...args) => listener.run(...args));
                     }
+                    else if (listener.type === "sekai") {
+                        this.sekaiEvents.set(eventname, listener);
+                        this.sekaiApi.on(eventname, (...args) => listener.run(...args));
+                    }
                 }
             }
             catch (e_4_1) { e_4 = { error: e_4_1 }; }
@@ -162,7 +171,9 @@ class NightCordClient extends discord_js_1.Client {
             this.loadModules();
             this.loadAssets();
             yield this.login(process.env.TOKEN);
+            this.sekaiApi.setup(this);
             this.loadCommands();
+            this.logger.setup(this);
             yield mongoose_1.default.connect(process.env.MONGO_URI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
