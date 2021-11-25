@@ -17,9 +17,6 @@ class Ready {
     run() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(`Logged in as : ${this.client.user.tag}`);
-            setInterval(function () {
-                this.client.loadAssets();
-            }, 3600000);
         });
     }
 }

@@ -169,7 +169,11 @@ class NightCordClient extends discord_js_1.Client {
             require("../Modules/KeepAlive");
             this.loadEvents();
             this.loadModules();
-            this.loadAssets();
+            yield this.loadAssets();
+            const c = this;
+            setInterval(function () {
+                c.loadAssets();
+            }, 3600000);
             yield this.login(process.env.TOKEN);
             this.sekaiApi.setup(this);
             this.loadCommands();

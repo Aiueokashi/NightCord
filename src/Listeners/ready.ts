@@ -10,10 +10,7 @@ class Ready {
   }
   
   public async run(){
-    console.log(`Logged in as : ${this.client.user.tag}`)
-    setInterval(function(){
-      this.client.loadAssets()
-      },3600000)
+    console.log(`Logged in as : ${this.client.user.tag}`);
     //deleteCommand(this.client);
   }
 }

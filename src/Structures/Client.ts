@@ -113,7 +113,11 @@ export class NightCordClient extends Client {
       require("../Modules/KeepAlive")
       this.loadEvents();
       this.loadModules();
-      this.loadAssets();
+      await this.loadAssets();
+      const c = this;
+      setInterval(function(){
+        c.loadAssets();
+      },3600000)
       await this.login(process.env.TOKEN);
       this.sekaiApi.setup(this);
       this.loadCommands();
