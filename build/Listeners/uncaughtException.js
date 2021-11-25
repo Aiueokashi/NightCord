@@ -7,16 +7,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-class Connected {
+class UncaughtException {
     constructor(client) {
-        this.name = "connected";
+        this.type = 'process';
+        this.name = 'uncaughtException';
         this.client = client;
-        this.type = "mongoose";
     }
-    run() {
+    run(err) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("Connected MONGO_DB Atlas");
+            console.error(`Uncaught error`, err);
         });
     }
 }
-module.exports = Connected;
+module.exports = UncaughtException;

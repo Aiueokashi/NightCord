@@ -3,7 +3,9 @@ import { Message } from "discord.js";
 class MessageCreate{
   client: any;
   type: string;
+  name: string
   constructor(client){
+    this.name = 'messageCreate';
     this.client = client;
     this.type = "discord";
   }

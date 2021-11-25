@@ -1,7 +1,9 @@
 class Api_Setup {
+  name: string;
   client: any;
   type: string;
   constructor(client){
+    this.name = 'api_setup';
     this.client = client;
     this.type = "sekai";
   }

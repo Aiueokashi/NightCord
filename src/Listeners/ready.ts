@@ -4,7 +4,9 @@ import deleteCommand from "../Modules/DeleteAll";
 class Ready {
   client: any;
   type: string;
+  name: string;
   constructor(client){
+    this.name = 'ready';
     this.client = client;
     this.type = "discord";
   }

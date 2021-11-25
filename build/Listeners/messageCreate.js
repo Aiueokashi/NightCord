@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 class MessageCreate {
     constructor(client) {
+        this.name = 'messageCreate';
         this.client = client;
         this.type = "discord";
     }

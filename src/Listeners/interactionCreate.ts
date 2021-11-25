@@ -3,7 +3,9 @@ import { CommandInteraction } from "discord.js";
 class InteractionCreate{
   client: any;
   type: string;
+  name: string;
   constructor(client){
+    this.name = 'interactionCreate'
     this.client = client;
     this.type = "discord";
   }

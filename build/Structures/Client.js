@@ -140,7 +140,7 @@ class NightCordClient extends discord_js_1.Client {
                 for (var listenerFiles_1 = __asyncValues(listenerFiles), listenerFiles_1_1; listenerFiles_1_1 = yield listenerFiles_1.next(), !listenerFiles_1_1.done;) {
                     const file = listenerFiles_1_1.value;
                     delete require.cache[`${file}`];
-                    const listener = new (require(`../Listeners/${file}`))(this), eventname = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
+                    const listener = new (require(`../Listeners/${file}`))(this), eventname = listener.name;
                     if (listener.type === "discord") {
                         this.clientEvents.set(eventname, listener);
                         _super.on.call(this, eventname, (...args) => listener.run(...args));
@@ -152,6 +152,9 @@ class NightCordClient extends discord_js_1.Client {
                     else if (listener.type === "sekai") {
                         this.sekaiEvents.set(eventname, listener);
                         this.sekaiApi.on(eventname, (...args) => listener.run(...args));
+                    }
+                    else if (listener.type === "process") {
+                        process.on(eventname, (...args) => listener.run(...args));
                     }
                 }
             }

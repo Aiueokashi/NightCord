@@ -1,7 +1,9 @@
 class Connected {
   client: any;
+  name: string;
   type: string;
   constructor(client){
+    this.name = "connected";
     this.client = client;
     this.type = "mongoose";
   }

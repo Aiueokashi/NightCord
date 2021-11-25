@@ -11,10 +11,14 @@ class eventNotifier {
   public async run(){
     cron.schedule('50 * * * * *', () => {
       this.eventCheck();
-      
-    })
+      this.checkEventStore();
+    });
   }
 
+  private async checkEventStore(){
+    
+  }
+  
   private async eventCheck(){
     let event = this.client.getInEvent();
     if(!event){

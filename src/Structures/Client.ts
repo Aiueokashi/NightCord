@@ -95,7 +95,7 @@ export class NightCordClient extends Client {
     for await(const file of listenerFiles){
       delete require.cache[`${file}`];
       const listener = new (require(`../Listeners/${file}`))(this),
-        eventname:string = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
+        eventname:string = listener.name;
       if(listener.type === "discord"){
         this.clientEvents.set(eventname, listener);
         super.on(eventname, (...args) => listener.run(...args));
@@ -105,6 +105,8 @@ export class NightCordClient extends Client {
       }else if(listener.type === "sekai"){
         this.sekaiEvents.set(eventname, listener);
         this.sekaiApi.on(eventname, (...args) => listener.run(...args));
+      }else if(listener.type === "process"){
+        process.on(eventname, (...args) => listener.run(...args));
       }
     }
   }
