@@ -32,8 +32,8 @@ class eventNotifier {
                 return null;
             }
             else {
-                let eventmodel = this.eventModel.findOne({ id: event.id });
-                if (eventmodel) {
+                let eventmodel = yield this.eventModel.findOne({ id: event.id });
+                if (!eventmodel) {
                     eventmodel = new this.eventModel({
                         id: event.id,
                         data: event

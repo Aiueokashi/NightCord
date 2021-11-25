@@ -9,8 +9,9 @@ class eventNotifier {
   }
 
   public async run(){
-    cron.schedule('0 * * * * *', () => {
+    cron.schedule('50 * * * * *', () => {
       this.eventCheck();
+      
     })
   }
 
@@ -19,8 +20,8 @@ class eventNotifier {
     if(!event){
       return null;
     }else{
-      let eventmodel = this.eventModel.findOne({id:event.id});
-      if(eventmodel){
+      let eventmodel = await this.eventModel.findOne({id:event.id});
+      if(!eventmodel){
         eventmodel = new this.eventModel({
           id:event.id,
           data:event

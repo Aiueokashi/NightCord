@@ -6,7 +6,7 @@ class Connected {
     this.type = "mongoose";
   }
   public async run(){
-    console.log("Connected MONGO_DB Atlas")
+    console.log("Connected MONGO_DB Atlas");
   }
 }
 

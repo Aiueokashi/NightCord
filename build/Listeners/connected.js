@@ -15,6 +15,10 @@ class Connected {
     run() {
         return __awaiter(this, void 0, void 0, function* () {
             console.log("Connected MONGO_DB Atlas");
+            const events = yield require("../Models/event").find({});
+            for (const e of events) {
+                e.deleteOne();
+            }
         });
     }
 }
