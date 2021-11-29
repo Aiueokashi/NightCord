@@ -11,7 +11,7 @@ export class SekaiApi extends EventEmitter{
 
   //イベントの最中かどうかを取得
   public getInEvent(){
-    const eventAsset = require("../Assets/events.json");
+    const eventAsset = JSON.parse(fs.readFileSync('../Assets/events.json', 'utf8'));
     let event = eventAsset.find(e => Date.now() < e.aggregateAt && Date.now() > e.startAt);
     if(!event){
       return null

@@ -5,7 +5,7 @@ class keepAlive{
   constructor(client){
     this.client = client;
   }
-  public _run():void{
+  public run():void{
   //@ts-ignore
   http.createServer(function (req, res) {
     res.write("keep aliving!");
@@ -13,7 +13,6 @@ class keepAlive{
   })
   .listen(8080);
   }
-  public run(){};
 }
 
 module.exports = keepAlive;

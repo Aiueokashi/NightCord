@@ -28,7 +28,7 @@ class SekaiApi extends events_1.EventEmitter {
         super();
     }
     getInEvent() {
-        const eventAsset = require("../Assets/events.json");
+        const eventAsset = JSON.parse(fs_1.default.readFileSync('../Assets/events.json', 'utf8'));
         let event = eventAsset.find(e => Date.now() < e.aggregateAt && Date.now() > e.startAt);
         if (!event) {
             return null;
