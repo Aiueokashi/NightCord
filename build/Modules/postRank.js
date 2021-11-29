@@ -37,7 +37,7 @@ class RankPoster {
     post() {
         var e_1, _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const event = this.client.getInEvent();
+            const event = this.client.sekaiApi.getInEvent();
             if (!event) {
                 return null;
             }

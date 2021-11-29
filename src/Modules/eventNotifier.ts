@@ -20,7 +20,7 @@ class eventNotifier {
   }
   
   private async eventCheck(){
-    let event = this.client.getInEvent();
+    let event = this.client.sekaiApi.getInEvent();
     if(!event){
       return null;
     }else{

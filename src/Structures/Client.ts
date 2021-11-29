@@ -4,8 +4,6 @@ import { Logger } from "./Logger";
 import _colors from "colors";
 import mongoose from "mongoose";
 import fs from "fs";
-import readlineSync from "readline-sync";
-import axios from "axios";
 import { SekaiApi } from "./SekaiApi";
 
 export class NightCordClient extends Client {
@@ -18,7 +16,6 @@ export class NightCordClient extends Client {
   sekaiApi: SekaiApi;
   deleteCmd: boolean;
   colors: any;
-  readline: any;
   dbGuild: string;
   notifyChannel: string;
   logChannel: string;
@@ -33,33 +30,11 @@ export class NightCordClient extends Client {
     this.modules = new Collection();
     this.logger = new Logger();
     this.sekaiApi = new SekaiApi();
-    this.readline = readlineSync;
     this.dbGuild = "731050051396173825";
     this.notifyChannel = "760785558296330261";
     this.logChannel = "787308319417171969";
     this.modChannel = "796027728868016169";
     this.deleteCmd = false;
-  }
-
-  public getInEvent(){
-    const eventAsset = require("../Assets/events.json");
-    let event = eventAsset.find(e => Date.now() < e.aggregateAt && Date.now() > e.startAt);
-    if(!event){
-      return null
-    }else{
-      return event;
-    }
-  }
-
-  public async loadAssets(){
-    const assetURL = "https://api.github.com/repos/Sekai-World/sekai-master-db-diff/contents";
-    const res = await axios.get(assetURL);
-    const data = res.data.filter(r => r.name.endsWith("json"));
-    for await(const d of data){
-      const raw = await axios.get(d.download_url)
-      fs.writeFileSync(`${__dirname}/../Assets/${d.name}`,JSON.stringify(raw.data));
-    }
-    return true;
   }
 
   public async loadModules(){
@@ -112,18 +87,11 @@ export class NightCordClient extends Client {
   }
 
   public async init(){
-      require("../Modules/KeepAlive")
+      this.logger.setup(this);
       this.loadEvents();
-      this.loadModules();
-      await this.loadAssets();
-      const c = this;
-      setInterval(function(){
-        c.loadAssets();
-      },3600000)
       await this.login(process.env.TOKEN);
       this.sekaiApi.setup(this);
       this.loadCommands();
-      this.logger.setup(this);
       await mongoose.connect(process.env.MONGO_URI,{
         useNewUrlParser: true,
         useUnifiedTopology: true,

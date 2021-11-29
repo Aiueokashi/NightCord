@@ -8,7 +8,12 @@ class Api_Setup {
     this.type = "sekai";
   }
   public async run(){
+    const client = this.client;
+    client.loadModules();
     console.log("API ready");
+    setInterval(function(){
+        client.sekaiApi.loadAssets();
+      },3600000)
   }
 }
 

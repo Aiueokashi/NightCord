@@ -17,7 +17,7 @@ class RankPoster {
   }
 
   private async post(){
-    const event = this.client.getInEvent();
+    const event = this.client.sekaiApi.getInEvent();
     if(!event){
       return null;
     }

@@ -32,7 +32,7 @@ class eventNotifier {
     }
     eventCheck() {
         return __awaiter(this, void 0, void 0, function* () {
-            let event = this.client.getInEvent();
+            let event = this.client.sekaiApi.getInEvent();
             if (!event) {
                 return null;
             }

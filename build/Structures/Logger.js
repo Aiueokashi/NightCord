@@ -10,14 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Logger = void 0;
+const moment = require("moment");
+require("moment-timezone");
+const chalk = require("chalk");
 class Logger {
     constructor() {
     }
     setup(client) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logChannel = client.channels.cache.get(client.logChannel);
-            this.client = client;
-        });
+        this.logChannel = client.channels.cache.get(client.logChannel);
+        this.client = client;
+        let oldConsole = console.log;
+        console.log = function () {
+            let timestamp = "[" + moment().tz("Asia/Tokyo").format("YYYY/MM/DD HH:mm:ss") + "] ";
+            Array.prototype.unshift.call(arguments, chalk.bold(timestamp));
+            oldConsole.apply(this, arguments);
+        };
     }
     post(data) {
         return __awaiter(this, void 0, void 0, function* () {
