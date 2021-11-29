@@ -12,8 +12,7 @@ class keepAlive {
         http_1.default.createServer(function (req, res) {
             res.write("keep aliving!");
             res.end();
-        })
-            .listen(8080);
+        }).listen(8080);
     }
 }
 module.exports = keepAlive;

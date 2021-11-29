@@ -14,14 +14,15 @@ const moment = require("moment");
 require("moment-timezone");
 const chalk = require("chalk");
 class Logger {
-    constructor() {
-    }
+    constructor() { }
     setup(client) {
         this.logChannel = client.channels.cache.get(client.logChannel);
         this.client = client;
         let oldConsole = console.log;
         console.log = function () {
-            let timestamp = "[" + moment().tz("Asia/Tokyo").format("YYYY/MM/DD HH:mm:ss") + "] ";
+            let timestamp = "[" +
+                moment().tz("Asia/Tokyo").format("YYYY/MM/DD HH:mm:ss") +
+                "] ";
             Array.prototype.unshift.call(arguments, chalk.bold(timestamp));
             oldConsole.apply(this, arguments);
         };

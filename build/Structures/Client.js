@@ -79,7 +79,7 @@ class NightCordClient extends discord_js_1.Client {
                         this.application.commands.create({
                             name: command.name,
                             description: command.description,
-                            options: command.options
+                            options: command.options,
                         }, process.env.GUILD_ID);
                     }
                 }

@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 class UncaughtException {
     constructor(client) {
-        this.type = 'process';
-        this.name = 'uncaughtException';
+        this.type = "process";
+        this.name = "uncaughtException";
         this.client = client;
     }
     run(err) {

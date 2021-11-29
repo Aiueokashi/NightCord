@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 class MessageCreate {
     constructor(client) {
-        this.name = 'messageCreate';
+        this.name = "messageCreate";
         this.client = client;
         this.type = "discord";
     }
@@ -37,7 +37,9 @@ class MessageCreate {
                 let errorDetails = error.toString();
                 if (errorDetails.includes(this.client.token))
                     errorDetails = errorDetails.replace(this.client.token, "gm", "*Token*");
-                message.channel.send({ content: `\`\`\`js\n${errorDetails}\`\`\`` });
+                message.channel.send({
+                    content: `\`\`\`js\n${errorDetails}\`\`\``,
+                });
             }
             finally {
                 const log = ` USE OF EVAL by ${message.author.username} ( ${message.author.id} )`;

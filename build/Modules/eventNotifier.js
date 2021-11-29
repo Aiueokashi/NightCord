@@ -20,15 +20,14 @@ class eventNotifier {
     }
     run() {
         return __awaiter(this, void 0, void 0, function* () {
-            node_cron_1.default.schedule('50 * * * * *', () => {
+            node_cron_1.default.schedule("50 * * * * *", () => {
                 this.eventCheck();
                 this.checkEventStore();
             });
         });
     }
     checkEventStore() {
-        return __awaiter(this, void 0, void 0, function* () {
-        });
+        return __awaiter(this, void 0, void 0, function* () { });
     }
     eventCheck() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41,7 +40,7 @@ class eventNotifier {
                 if (!eventmodel) {
                     eventmodel = new this.eventModel({
                         id: event.id,
-                        data: event
+                        data: event,
                     });
                     yield eventmodel.save();
                 }

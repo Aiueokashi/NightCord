@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 class Api_Setup {
     constructor(client) {
-        this.name = 'api_setup';
+        this.name = "api_setup";
         this.client = client;
         this.type = "sekai";
     }

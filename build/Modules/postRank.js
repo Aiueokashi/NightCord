@@ -29,7 +29,7 @@ class RankPoster {
     }
     run() {
         return __awaiter(this, void 0, void 0, function* () {
-            node_cron_1.default.schedule('0 * * * *', () => {
+            node_cron_1.default.schedule("0 * * * *", () => {
                 this.post();
             });
         });
@@ -56,13 +56,13 @@ class RankPoster {
                         url: "event/live",
                         params: {
                             rank: `${t}`,
-                        }
+                        },
                     });
                     const rank = res.data.data.eventRankings[0];
                     let dataTime = new Date(res.data.data.timestamp);
                     let now = new Date();
                     if (!passed) {
-                        if ((now.getTime() - dataTime.getTime()) > 600000) {
+                        if (now.getTime() - dataTime.getTime() > 600000) {
                             isNew = false;
                             passed = true;
                         }
@@ -70,7 +70,8 @@ class RankPoster {
                             passed = true;
                         }
                     }
-                    desc = desc + `${t}位 : ${rank.userName} | ポイント : ${rank.score}\n`;
+                    desc =
+                        desc + `${t}位 : ${rank.userName} | ポイント : ${rank.score}\n`;
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -80,9 +81,13 @@ class RankPoster {
                 }
                 finally { if (e_1) throw e_1.error; }
             }
-            isNew ? null : rank_embed.setColor("RED").setFooter("10分以上前のデータです。");
+            isNew
+                ? null
+                : rank_embed.setColor("RED").setFooter("10分以上前のデータです。");
             rank_embed.setDescription(desc).setTimestamp();
-            this.client.channels.fetch("786953511182401566").then(c => c.send({ embeds: [rank_embed] }));
+            this.client.channels
+                .fetch("786953511182401566")
+                .then((c) => c.send({ embeds: [rank_embed] }));
         });
     }
 }

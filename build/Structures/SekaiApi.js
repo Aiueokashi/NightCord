@@ -28,8 +28,8 @@ class SekaiApi extends events_1.EventEmitter {
         super();
     }
     getInEvent() {
-        const eventAsset = JSON.parse(fs_1.default.readFileSync('../Assets/events.json', 'utf8'));
-        let event = eventAsset.find(e => Date.now() < e.aggregateAt && Date.now() > e.startAt);
+        const eventAsset = require("../Assets/events.json");
+        let event = eventAsset.find((e) => Date.now() < e.aggregateAt && Date.now() > e.startAt);
         if (!event) {
             return null;
         }
@@ -39,7 +39,7 @@ class SekaiApi extends events_1.EventEmitter {
     }
     getLastEvent() {
         const eventAsset = require("../Assets/events.json");
-        let event = eventAsset.find(e => Date.now() < e.aggregateAt && Date.now() > e.startAt);
+        let event = eventAsset.find((e) => Date.now() < e.aggregateAt && Date.now() > e.startAt);
         if (!event) {
             event = Object.entries(eventAsset);
         }
@@ -60,7 +60,8 @@ class SekaiApi extends events_1.EventEmitter {
         return __awaiter(this, void 0, void 0, function* () {
             const assetURL = "https://api.github.com/repos/Sekai-World/sekai-master-db-diff/contents";
             const res = yield axios_1.default.get(assetURL);
-            const data = res.data.filter(r => r.name.endsWith("json"));
+            const data = res.data.filter((r) => r.name.endsWith("json"));
+            fs_1.default.mkdir(`${__dirname}/../Assets`, () => { });
             try {
                 for (var data_1 = __asyncValues(data), data_1_1; data_1_1 = yield data_1.next(), !data_1_1.done;) {
                     const d = data_1_1.value;

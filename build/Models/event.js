@@ -7,11 +7,11 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const eventSchema = new mongoose_1.default.Schema({
     id: {
         type: String,
-        required: true
+        required: true,
     },
     data: {
         type: mongoose_1.default.Schema.Types.Mixed,
-        required: true
-    }
+        required: true,
+    },
 });
-module.exports = mongoose_1.default.model('Event', eventSchema);
+module.exports = mongoose_1.default.model("Event", eventSchema);

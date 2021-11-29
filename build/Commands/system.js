@@ -23,7 +23,7 @@ module.exports = class System extends Command_1.Command {
             name: "system",
             description: "bot info",
             options: null,
-            disable: false
+            disable: false,
         });
     }
     run(interaction, args) {
