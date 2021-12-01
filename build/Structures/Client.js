@@ -73,9 +73,9 @@ class NightCordClient extends discord_js_1.Client {
                 for (var commandFiles_1 = __asyncValues(commandFiles), commandFiles_1_1; commandFiles_1_1 = yield commandFiles_1.next(), !commandFiles_1_1.done;) {
                     const file = commandFiles_1_1.value;
                     delete require.cache[`${file}`];
-                    const command = new (require(`../Commands/${file}`))(this), filename = file.slice(file.lastIndexOf("/") + 1, file.length - 3);
+                    const command = new (require(`../Commands/${file}`))(this);
                     if (!command.disable) {
-                        this.commands.set(filename, command);
+                        this.commands.set(command.name, command);
                         this.application.commands.create({
                             name: command.name,
                             description: command.description,

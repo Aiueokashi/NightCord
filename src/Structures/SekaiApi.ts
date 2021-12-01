@@ -1,11 +1,14 @@
+import { NightCordClient } from "./Client";
 import { EventEmitter } from "events";
 import axios from "axios";
 import fs from "fs";
 
 export class SekaiApi extends EventEmitter {
-    client: any;
+    client: NightCordClient;
+    eventModel: any;
     constructor() {
         super();
+        this.eventModel = require("../Models/event");
     }
 
     //イベントの最中かどうかを取得
@@ -28,13 +31,13 @@ export class SekaiApi extends EventEmitter {
             (e) => Date.now() < e.aggregateAt && Date.now() > e.startAt
         );
         if (!event) {
-            event = Object.entries(eventAsset);
+            //await this.eventModel.
         } else {
             return event;
         }
     }
 
-    public async setup(client) {
+    public async setup(client: NightCordClient) {
         this.client = client;
         this.emit("api_init");
         await this.loadAssets();

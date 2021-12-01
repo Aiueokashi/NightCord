@@ -9,7 +9,7 @@ class eventNotifier {
     }
 
     public async run() {
-        cron.schedule("50 * * * * *", () => {
+        cron.schedule("5,55 * * * * *", () => {
             this.eventCheck();
             this.checkEventStore();
         });

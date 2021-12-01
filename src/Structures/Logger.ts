@@ -1,14 +1,15 @@
-import { Client, MessageOptions } from "discord.js";
+import { MessageOptions } from "discord.js";
+import { NightCordClient } from "./Client";
 const moment = require("moment");
 require("moment-timezone");
 const chalk = require("chalk");
 
 export class Logger {
-    client: Client;
+    client: NightCordClient;
     logChannel: any;
     constructor() {}
 
-    public setup(client) {
+    public setup(client: NightCordClient) {
         this.logChannel = client.channels.cache.get(client.logChannel);
         this.client = client;
         let oldConsole = console.log;

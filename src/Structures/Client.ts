@@ -1,7 +1,7 @@
-import { Client, Collection } from "discord.js";
+import { Client, Collection, ClientOptions } from "discord.js";
 import { Command } from "./Command";
 import { Logger } from "./Logger";
-import _colors from "colors";
+import colors from "colors";
 import mongoose from "mongoose";
 import fs from "fs";
 import { SekaiApi } from "./SekaiApi";
@@ -20,10 +20,10 @@ export class NightCordClient extends Client {
     notifyChannel: string;
     logChannel: string;
     modChannel: string;
-    constructor(options: any) {
+    constructor(options: ClientOptions) {
         super(options);
         this.commands = new Collection();
-        this.colors = _colors;
+        this.colors = colors;
         this.clientEvents = new Collection();
         this.mongoEvents = new Collection();
         this.sekaiEvents = new Collection();
@@ -55,13 +55,9 @@ export class NightCordClient extends Client {
         const commandFiles = fs.readdirSync(`${__dirname}/../Commands`);
         for await (const file of commandFiles) {
             delete require.cache[`${file}`];
-            const command: Command = new (require(`../Commands/${file}`))(this),
-                filename: string = file.slice(
-                    file.lastIndexOf("/") + 1,
-                    file.length - 3
-                );
+            const command: Command = new (require(`../Commands/${file}`))(this);
             if (!command.disable) {
-                this.commands.set(filename, command);
+                this.commands.set(command.name, command);
                 this.application.commands.create(
                     {
                         name: command.name,

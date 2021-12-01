@@ -26,6 +26,7 @@ const fs_1 = __importDefault(require("fs"));
 class SekaiApi extends events_1.EventEmitter {
     constructor() {
         super();
+        this.eventModel = require("../Models/event");
     }
     getInEvent() {
         const eventAsset = require("../Assets/events.json");
@@ -41,7 +42,6 @@ class SekaiApi extends events_1.EventEmitter {
         const eventAsset = require("../Assets/events.json");
         let event = eventAsset.find((e) => Date.now() < e.aggregateAt && Date.now() > e.startAt);
         if (!event) {
-            event = Object.entries(eventAsset);
         }
         else {
             return event;
