@@ -45,7 +45,7 @@ export class NightCordClient extends Client {
             const module = new (require(`../Modules/${file}`))(this),
                 modulename: string = file.slice(
                     file.lastIndexOf("/") + 1,
-                    file.length - 3
+                    file.length - 3,
                 );
             this.modules.set(modulename, module);
             module.run();
@@ -65,7 +65,7 @@ export class NightCordClient extends Client {
                         description: command.description,
                         options: command.options,
                     },
-                    process.env.GUILD_ID
+                    process.env.GUILD_ID,
                 );
             }
         }
@@ -83,7 +83,7 @@ export class NightCordClient extends Client {
             } else if (listener.type === "mongoose") {
                 this.mongoEvents.set(eventname, listener);
                 mongoose.connection.on(eventname, (...args) =>
-                    listener.run(...args)
+                    listener.run(...args),
                 );
             } else if (listener.type === "sekai") {
                 this.sekaiEvents.set(eventname, listener);

@@ -15,7 +15,7 @@ export class SekaiApi extends EventEmitter {
     public getInEvent() {
         const eventAsset = require("../Assets/events.json");
         let event = eventAsset.find(
-            (e) => Date.now() < e.aggregateAt && Date.now() > e.startAt
+            (e) => Date.now() < e.aggregateAt && Date.now() > e.startAt,
         );
         if (!event) {
             return null;
@@ -28,7 +28,7 @@ export class SekaiApi extends EventEmitter {
     public getLastEvent() {
         const eventAsset = require("../Assets/events.json");
         let event = eventAsset.find(
-            (e) => Date.now() < e.aggregateAt && Date.now() > e.startAt
+            (e) => Date.now() < e.aggregateAt && Date.now() > e.startAt,
         );
         if (!event) {
             //await this.eventModel.
@@ -59,7 +59,7 @@ export class SekaiApi extends EventEmitter {
                     const raw = await axios.get(d.download_url);
                     fs.writeFileSync(
                         `${__dirname}/../Assets/${d.name}`,
-                        JSON.stringify(raw.data)
+                        JSON.stringify(raw.data),
                     );
                 }
                 first = false;

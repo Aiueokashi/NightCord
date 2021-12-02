@@ -35,7 +35,7 @@ export class Logger {
             .setColor(
                 typeof THEME[type] === "object"
                     ? THEME[type][THEME[type].length - 1].toUpperCase()
-                    : THEME[type].toUpperCase()
+                    : THEME[type].toUpperCase(),
             )
             .setTimestamp()
             .setFooter(type);
@@ -67,12 +67,12 @@ export class Logger {
                         eval(
                             "oldConsole(`${timestamp.green} ${arg" +
                                 color +
-                                "}`, ...args);"
+                                "}`, ...args);",
                         );
                     } else {
                         oldConsole(
                             `${timestamp.green} ${arg[THEME[t]]}`,
-                            ...args
+                            ...args,
                         );
                     }
                 };

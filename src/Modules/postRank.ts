@@ -24,7 +24,7 @@ class RankPoster {
         let rank_embed = new MessageEmbed()
             .setTitle(`${event.name} | イベントランキング`)
             .setImage(
-                `https://sekai-res.dnaroma.eu/file/sekai-assets/home/banner/${event.assetbundleName}_rip/${event.assetbundleName}.webp`
+                `https://sekai-res.dnaroma.eu/file/sekai-assets/home/banner/${event.assetbundleName}_rip/${event.assetbundleName}.webp`,
             );
         let desc: string = "";
         let passed: boolean = false;

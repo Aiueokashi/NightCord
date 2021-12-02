@@ -23,7 +23,7 @@ class deleteAll {
                         cmd.name +
                         ", ID: " +
                         cmd.id +
-                        " }"
+                        " }",
                 );
             });
             Guildcmds.forEach((cmds) => {
@@ -37,7 +37,7 @@ class deleteAll {
                         cmds.name +
                         ", ID: " +
                         cmds.id +
-                        " }"
+                        " }",
                 );
             });
             return 1;

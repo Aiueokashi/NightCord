@@ -20,7 +20,7 @@ export abstract class Command {
             description: string;
             disable: boolean;
             options: any;
-        }
+        },
     ) {
         this.name = opt.name;
         this.description = opt.description;
@@ -32,7 +32,7 @@ export abstract class Command {
     public abstract onMessage(message: Message): Promise<void>;
     public abstract onVoiceStateUpdate(
         oldState: VoiceState,
-        newState: VoiceState
+        newState: VoiceState,
     ): void;
     public abstract onInteraction(interaction: Interaction): Promise<void>;
     //@ts-ignore

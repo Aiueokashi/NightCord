@@ -11,11 +11,11 @@ class InteractionCreate {
         this.type = "discord";
     }
 
-    public async run(interaction: CommandInteraction) {
+    public run(interaction: CommandInteraction): void {
         const client = this.client;
         try {
             const command = client.commands.get(
-                interaction.commandName.toLowerCase()
+                interaction.commandName.toLowerCase(),
             );
             if (command) command.run(interaction, interaction.options);
         } catch (error) {

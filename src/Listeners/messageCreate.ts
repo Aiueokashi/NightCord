@@ -34,7 +34,7 @@ class MessageCreate {
                 errorDetails = errorDetails.replace(
                     this.client.token,
                     "gm",
-                    "*Token*"
+                    "*Token*",
                 );
 
             message.channel.send({

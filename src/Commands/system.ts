@@ -34,17 +34,17 @@ module.exports = class System extends Command {
         let UpTime = `[ ${timeCon(process.uptime())} ]`;
         let Process_Info = `[ PID: ${process.pid} at ${process.cwd()}]`;
         let Process_Memory_Usage = `[ ${Math.ceil(
-            process.memoryUsage().heapTotal / 1000000
+            process.memoryUsage().heapTotal / 1000000,
         )}MB ]`;
-        let System_Memory_Usage = `[ ${Math.ceil(
-            (os.totalmem() - os.freemem()) / 1000000
+        const System_Memory_Usage = `[ ${Math.ceil(
+            (os.totalmem() - os.freemem()) / 1000000,
         )}MB of ${Math.ceil(os.totalmem() / 1000000)}MB ]`;
         let RAM_Usage = `[ ${(
             process.memoryUsage().rss / 1048576
         ).toFixed()}MB ]`;
         let Memory_Usage = `[ ${formatBytes(
             process.memoryUsage().heapUsed,
-            2
+            2,
         )} ]`;
         let msg =
             "```\n" +
@@ -55,7 +55,7 @@ module.exports = class System extends Command {
 };
 
 function formatBytes(a, b) {
-    if (0 == a) return "0 Bytes";
+    if (0 === a) return "0 Bytes";
     let c = 1024,
         d = b || 2,
         e = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
@@ -64,7 +64,7 @@ function formatBytes(a, b) {
     return parseFloat((a / Math.pow(c, f)).toFixed(d)) + " " + e[f];
 }
 
-function timeCon(time) {
+function timeCon(time): string {
     let days: any = Math.floor((time % 31536000) / 86400);
     let hours: any = Math.floor(((time % 31536000) % 86400) / 3600);
     let minutes: any = Math.floor((((time % 31536000) % 86400) % 3600) / 60);
