@@ -1,17 +1,17 @@
-//@ts-ignore
 import { CommandInteraction } from "discord.js";
+import { NightCordClient } from "../Structures/Client";
 
 class InteractionCreate {
     client: any;
     type: string;
     name: string;
-    constructor(client) {
+    constructor(client: NightCordClient) {
         this.name = "interactionCreate";
         this.client = client;
         this.type = "discord";
     }
 
-    public async run(interaction /*: CommandInteraction*/) {
+    public async run(interaction: CommandInteraction) {
         const client = this.client;
         try {
             const command = client.commands.get(
