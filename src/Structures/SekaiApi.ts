@@ -45,18 +45,26 @@ export class SekaiApi extends EventEmitter {
     }
 
     public async loadAssets() {
+        let first = true;
         const assetURL =
             "https://api.github.com/repos/Sekai-World/sekai-master-db-diff/contents";
         const res = await axios.get(assetURL);
         const data = res.data.filter((r) => r.name.endsWith("json"));
-        fs.mkdir(`${__dirname}/../Assets`, () => {});
-        for await (const d of data) {
-            const raw = await axios.get(d.download_url);
-            fs.writeFileSync(
-                `${__dirname}/../Assets/${d.name}`,
-                JSON.stringify(raw.data)
-            );
-        }
-        return true;
+        fs.mkdir(`${__dirname}/../Assets`, async (err) => {
+            if (err && first) {
+                first = false;
+                return err;
+            } else {
+                for await (const d of data) {
+                    const raw = await axios.get(d.download_url);
+                    fs.writeFileSync(
+                        `${__dirname}/../Assets/${d.name}`,
+                        JSON.stringify(raw.data)
+                    );
+                }
+                first = false;
+                return true;
+            }
+        });
     }
 }

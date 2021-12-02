@@ -15,7 +15,7 @@ class Connected {
     }
     run() {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("Connected MONGO_DB Atlas");
+            console.info("Connected MONGO_DB Atlas");
         });
     }
 }

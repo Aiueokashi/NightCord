@@ -7,7 +7,7 @@
     "format": "npx prettier --write src/**/*.ts",
     "start": "node_modules/.bin/node ./build/index.js",
     "debug": "ts-node ./src/index.ts",
-    "compile": "rm -r build && mkdir build && tsc -p ."
+    "compile": "tsc -p ."
   },
   "keywords": [],
   "author": "",

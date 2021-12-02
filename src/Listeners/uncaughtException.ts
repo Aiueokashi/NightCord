@@ -9,7 +9,7 @@ class UncaughtException {
     }
 
     public async run(err) {
-        console.error(`Uncaught error`, err);
+        console.error(`Uncaught error : `, err);
     }
 }
 

@@ -20,6 +20,7 @@ export class NightCordClient extends Client {
     notifyChannel: string;
     logChannel: string;
     modChannel: string;
+    debug: boolean;
     constructor(options: ClientOptions) {
         super(options);
         this.commands = new Collection();
@@ -93,7 +94,8 @@ export class NightCordClient extends Client {
         }
     }
 
-    public async init() {
+    public async init(debug: boolean) {
+        this.debug = debug;
         this.logger.setup(this);
         this.loadEvents();
         await this.login(process.env.TOKEN);

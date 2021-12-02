@@ -43,7 +43,7 @@ class MessageCreate {
         } finally {
             const log = ` USE OF EVAL by ${message.author.username} ( ${message.author.id} )`;
 
-            console.log(`EVAL [${log}]`);
+            console.warn(`EVAL [${log}]`);
         }
     }
 }

@@ -17,7 +17,7 @@ class Ready {
     }
     run() {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(`Logged in as : ${this.client.user.tag}`);
+            console.info(`Logged in as : ${this.client.user.tag}`);
         });
     }
 }

@@ -56,27 +56,36 @@ class SekaiApi extends events_1.EventEmitter {
         });
     }
     loadAssets() {
-        var e_1, _a;
         return __awaiter(this, void 0, void 0, function* () {
+            let first = true;
             const assetURL = "https://api.github.com/repos/Sekai-World/sekai-master-db-diff/contents";
             const res = yield axios_1.default.get(assetURL);
             const data = res.data.filter((r) => r.name.endsWith("json"));
-            fs_1.default.mkdir(`${__dirname}/../Assets`, () => { });
-            try {
-                for (var data_1 = __asyncValues(data), data_1_1; data_1_1 = yield data_1.next(), !data_1_1.done;) {
-                    const d = data_1_1.value;
-                    const raw = yield axios_1.default.get(d.download_url);
-                    fs_1.default.writeFileSync(`${__dirname}/../Assets/${d.name}`, JSON.stringify(raw.data));
+            fs_1.default.mkdir(`${__dirname}/../Assets`, (err) => __awaiter(this, void 0, void 0, function* () {
+                var e_1, _a;
+                if (err && first) {
+                    first = false;
+                    return err;
                 }
-            }
-            catch (e_1_1) { e_1 = { error: e_1_1 }; }
-            finally {
-                try {
-                    if (data_1_1 && !data_1_1.done && (_a = data_1.return)) yield _a.call(data_1);
+                else {
+                    try {
+                        for (var data_1 = __asyncValues(data), data_1_1; data_1_1 = yield data_1.next(), !data_1_1.done;) {
+                            const d = data_1_1.value;
+                            const raw = yield axios_1.default.get(d.download_url);
+                            fs_1.default.writeFileSync(`${__dirname}/../Assets/${d.name}`, JSON.stringify(raw.data));
+                        }
+                    }
+                    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                    finally {
+                        try {
+                            if (data_1_1 && !data_1_1.done && (_a = data_1.return)) yield _a.call(data_1);
+                        }
+                        finally { if (e_1) throw e_1.error; }
+                    }
+                    first = false;
+                    return true;
                 }
-                finally { if (e_1) throw e_1.error; }
-            }
-            return true;
+            }));
         });
     }
 }

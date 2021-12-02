@@ -1,18 +1,19 @@
+import { NightCordClient } from "../Structures/Client";
 //@ts-ignore
 import deleteCommand from "../Modules/DeleteAll";
 
 class Ready {
-    client: any;
+    client: NightCordClient;
     type: string;
     name: string;
-    constructor(client) {
+    constructor(client: NightCordClient) {
         this.name = "ready";
         this.client = client;
         this.type = "discord";
     }
 
     public async run() {
-        console.log(`Logged in as : ${this.client.user.tag}`);
+        console.info(`Logged in as : ${this.client.user.tag}`);
         //deleteCommand(this.client);
     }
 }

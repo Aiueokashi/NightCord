@@ -15,7 +15,7 @@ class UncaughtException {
     }
     run(err) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.error(`Uncaught error`, err);
+            console.error(`Uncaught error : `, err);
         });
     }
 }

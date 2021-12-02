@@ -1,6 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TRAINING_RARELITY = exports.RARELITY = exports.LARGE_EMOJI_UNIT = exports.EMOJI_UNIT = exports.UNIT = exports.ATTR = exports.RATE = exports.RARITY_POWER = void 0;
+exports.TRAINING_RARELITY = exports.RARELITY = exports.LARGE_EMOJI_UNIT = exports.EMOJI_UNIT = exports.UNIT = exports.ATTR = exports.RATE = exports.RARITY_POWER = exports.THEME = void 0;
+exports.THEME = {
+    info: "cyan",
+    warn: "yellow",
+    debug: "blue",
+    error: ["bold", "underline", "red"],
+};
 exports.RARITY_POWER = {
     1: ["19", "39", "59"],
     2: ["29", "59", "89"],

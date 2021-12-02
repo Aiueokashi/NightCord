@@ -1,3 +1,9 @@
+export const THEME = {
+    info: "cyan",
+    warn: "yellow",
+    debug: "blue",
+    error: ["bold", "underline", "red"],
+};
 export const RARITY_POWER = {
     1: ["19", "39", "59"],
     2: ["29", "59", "89"],

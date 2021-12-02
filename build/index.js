@@ -6,4 +6,4 @@ const options = {
     intents: discord_js_1.Intents.FLAGS.GUILDS | discord_js_1.Intents.FLAGS.GUILD_MESSAGES | discord_js_1.Intents.FLAGS.GUILD_VOICE_STATES
 };
 const client = new Client_1.NightCordClient(options);
-client.init();
+client.init(true);

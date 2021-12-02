@@ -24,6 +24,7 @@ class InteractionCreate {
                     command.run(interaction, interaction.options);
             }
             catch (error) {
+                console.error("cought error on " + `${__filename}`.grey, error);
                 interaction.reply({ content: error.message, ephemeral: true });
             }
         });

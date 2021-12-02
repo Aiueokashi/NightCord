@@ -131,8 +131,9 @@ class NightCordClient extends discord_js_1.Client {
             }
         });
     }
-    init() {
+    init(debug) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.debug = debug;
             this.logger.setup(this);
             this.loadEvents();
             yield this.login(process.env.TOKEN);

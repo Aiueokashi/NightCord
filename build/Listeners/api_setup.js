@@ -17,9 +17,12 @@ class Api_Setup {
         return __awaiter(this, void 0, void 0, function* () {
             const client = this.client;
             client.loadModules();
-            console.log("API ready");
+            console.info("pjsekai API ready");
             setInterval(function () {
-                client.sekaiApi.loadAssets();
+                return __awaiter(this, void 0, void 0, function* () {
+                    yield client.sekaiApi.loadAssets();
+                    console.debug("API Assets loaded Succesfully");
+                });
             }, 3600000);
         });
     }

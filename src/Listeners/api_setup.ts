@@ -10,9 +10,10 @@ class Api_Setup {
     public async run() {
         const client = this.client;
         client.loadModules();
-        console.log("API ready");
-        setInterval(function () {
-            client.sekaiApi.loadAssets();
+        console.info("pjsekai API ready");
+        setInterval(async function () {
+            await client.sekaiApi.loadAssets();
+            console.debug("API Assets loaded Succesfully");
         }, 3600000);
     }
 }
