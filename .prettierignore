@@ -2,3 +2,4 @@ build/
 .replit
 *.json
 *.env
+*.md
