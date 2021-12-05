@@ -9,7 +9,7 @@
     "debug": "ts-node ./src/index.ts",
     "compile": "tsc -p ."
   },
-  "keywords": [],
+  "keywords": ["node","discord.js","discord","bot","typescript"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
