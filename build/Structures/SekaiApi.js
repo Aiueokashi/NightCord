@@ -27,6 +27,7 @@ class SekaiApi extends events_1.EventEmitter {
     constructor() {
         super();
         this.eventModel = require("../Models/event");
+        this.first = true;
     }
     getInEvent() {
         const eventAsset = require("../Assets/events.json");
@@ -57,14 +58,13 @@ class SekaiApi extends events_1.EventEmitter {
     }
     loadAssets() {
         return __awaiter(this, void 0, void 0, function* () {
-            let first = true;
             const assetURL = "https://api.github.com/repos/Sekai-World/sekai-master-db-diff/contents";
             const res = yield axios_1.default.get(assetURL);
             const data = res.data.filter((r) => r.name.endsWith("json"));
             fs_1.default.mkdir(`${__dirname}/../Assets`, (err) => __awaiter(this, void 0, void 0, function* () {
                 var e_1, _a;
-                if (err && first) {
-                    first = false;
+                if (err && this.first) {
+                    this.first = false;
                     return err;
                 }
                 else {
@@ -82,7 +82,7 @@ class SekaiApi extends events_1.EventEmitter {
                         }
                         finally { if (e_1) throw e_1.error; }
                     }
-                    first = false;
+                    this.first = false;
                     return true;
                 }
             }));

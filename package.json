@@ -2,14 +2,20 @@
   "name": "NightCord",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "format": "npx prettier --write src/**/*.ts",
     "start": "node_modules/.bin/node ./build/index.js",
     "debug": "ts-node ./src/index.ts",
     "compile": "tsc -p ."
   },
-  "keywords": ["node","discord.js","discord","bot","typescript"],
+  "keywords": [
+    "node",
+    "discord.js",
+    "discord",
+    "bot",
+    "typescript"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -20,7 +26,6 @@
     "ascii-table": "0.0.9",
     "axios": "^0.24.0",
     "chalk": "^4.1.2",
-    "cli-progress": "^3.9.1",
     "colors": "^1.4.0",
     "discord.js": "^13.2.0",
     "moment": "^2.29.1",

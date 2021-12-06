@@ -6,9 +6,11 @@ import fs from "fs";
 export class SekaiApi extends EventEmitter {
     client: NightCordClient;
     eventModel: any;
+    first: boolean;
     constructor() {
         super();
         this.eventModel = require("../Models/event");
+        this.first = true;
     }
 
     //イベントの最中かどうかを取得
@@ -45,14 +47,13 @@ export class SekaiApi extends EventEmitter {
     }
 
     public async loadAssets() {
-        let first = true;
         const assetURL =
             "https://api.github.com/repos/Sekai-World/sekai-master-db-diff/contents";
         const res = await axios.get(assetURL);
         const data = res.data.filter((r) => r.name.endsWith("json"));
         fs.mkdir(`${__dirname}/../Assets`, async (err) => {
-            if (err && first) {
-                first = false;
+            if (err && this.first) {
+                this.first = false;
                 return err;
             } else {
                 for await (const d of data) {
@@ -62,7 +63,7 @@ export class SekaiApi extends EventEmitter {
                         JSON.stringify(raw.data),
                     );
                 }
-                first = false;
+                this.first = false;
                 return true;
             }
         });
